@@ -81,9 +81,9 @@ SO SÁNH INDEX TRONG ORACLE, SQL SERVER, POSTGRESQL VÀ MYSQL
 | **Filtered Unique Index**          | ✅ `WHERE col IS NOT NULL`              | ❌ Không hỗ trợ                         | ✅ `WHERE col IS NOT NULL`              | ❌ Không hỗ trợ                         |
 | **Unique vs Primary Key**          | Unique: nullable, non-clustered        | Unique: nullable                       | Unique: nullable                       | Unique: nullable, secondary            |
 
-9. INDEX ONLINE OPERATIONS| Đặc tính / Loại Index              
-| SQL Server                          | Oracle Database                         | PostgreSQL                             | MySQL (InnoDB)                         |
-|:-----------------------------------|:-----------------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|
+9. INDEX ONLINE OPERATIONS
+| Đặc tính / Loại Index              | SQL Server                               | Oracle Database                         | PostgreSQL                             | MySQL (InnoDB)                         |
+|:-----------------------------------|:-----------------------------------------|:--------------------------------------- |:---------------------------------------|:---------------------------------------|
 | **Online Create**                  | ✅ `ONLINE = ON` (Enterprise)           | ✅ `ONLINE`                             | ✅ `CONCURRENTLY`                       | ✅ `ALGORITHM=INPLACE`                  |
 | **Online Rebuild**                 | ✅ `REBUILD ... ONLINE` (Enterprise)    | ✅ `REBUILD ONLINE`                     | ✅ `REINDEX CONCURRENTLY` (v12+)        | ✅ `ALGORITHM=INPLACE`                  |
 | **Online Drop**                    | ❌ Không có                             | ✅ `DROP ONLINE` (12c+)                 | ✅ `DROP CONCURRENTLY` (v14+)           | ✅ `ALGORITHM=INPLACE`                  |
@@ -92,7 +92,8 @@ SO SÁNH INDEX TRONG ORACLE, SQL SERVER, POSTGRESQL VÀ MYSQL
 | **Rollback Support**               | ✅ Có                                   | ✅ Có                                   | ⚠️ Không rollback được (CONCURRENTLY)   | ✅ Có                                   |
 | **Transaction Support**            | ✅ Trong transaction                    | ✅ Trong transaction                    | ❌ Không thể trong transaction          | ✅ Trong transaction                    |
 
-10. INDEX MONITORING & STATISTICS| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
+10. INDEX MONITORING & STATISTICS
+| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
 |:-----------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|
 | **Monitor Usage**                  | ✅ `sys.dm_db_index_usage_stats`        | ✅ `MONITORING USAGE`                   | ✅ `pg_stat_user_indexes`               | ⚠️ Performance Schema                  |
 | **Index Statistics**               | ✅ Auto-update stats                    | ✅ `DBMS_STATS`                         | ✅ `ANALYZE` command                    | ✅ `ANALYZE TABLE`                      |
@@ -102,7 +103,8 @@ SO SÁNH INDEX TRONG ORACLE, SQL SERVER, POSTGRESQL VÀ MYSQL
 | **Unused Index Detection**         | ✅ `sys.dm_db_index_usage_stats`        | ✅ `V$OBJECT_USAGE`                     | ✅ `pg_stat_user_indexes`               | ⚠️ Manual via slow query log           |
 | **Index Size Query**               | ✅ `sys.dm_db_partition_stats`          | ✅ `USER_SEGMENTS`                      | ✅ `pg_indexes_size`                    | ✅ `INFORMATION_SCHEMA.TABLES`          |
 
-11. INDEX HINTS & OPTIMIZER| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
+11. INDEX HINTS & OPTIMIZER
+| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
 |:-----------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|
 | **Force Index Use**                | ✅ `WITH (INDEX(idx_name))`             | ✅ `/*+ INDEX(t idx) */`                | ⚠️ Set enable_* parameters             | ✅ `FORCE INDEX (idx_name)`             |
 | **Ignore Index**                   | ❌ Không có direct                      | ✅ `/*+ NO_INDEX(t idx) */`             | ⚠️ Set enable_indexscan = off          | ✅ `IGNORE INDEX (idx_name)`            |
@@ -111,7 +113,8 @@ SO SÁNH INDEX TRONG ORACLE, SQL SERVER, POSTGRESQL VÀ MYSQL
 | **Hint Syntax Location**           | `OPTION (...)` clause                  | `/*+ hint */` comment                  | Configuration parameters               | Inline trong FROM clause               |
 | **Optimizer Override**             | ✅ Query hints                          | ✅ Optimizer hints                      | ⚠️ Limited (cost parameters)           | ✅ Index hints                          |
 
-12. INDEX DESCENDING & SORT ORDER| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
+12. INDEX DESCENDING & SORT ORDER
+| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
 |:-----------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|
 | **Descending Index**               | ✅ `CREATE INDEX ... (col DESC)`        | ✅ `CREATE INDEX ... (col DESC)`        | ✅ `CREATE INDEX ... (col DESC)`        | ⚠️ Parsed nhưng ignored                |
 | **Mixed ASC/DESC**                 | ✅ `(col1 ASC, col2 DESC)`              | ✅ `(col1 ASC, col2 DESC)`              | ✅ `(col1 ASC, col2 DESC)`              | ⚠️ Parsed nhưng ignored                |
@@ -120,7 +123,8 @@ SO SÁNH INDEX TRONG ORACLE, SQL SERVER, POSTGRESQL VÀ MYSQL
 | **Use Case**                       | ORDER BY DESC queries                  | ORDER BY DESC queries                  | ORDER BY DESC queries                  | Phải tạo riêng index cho mỗi direction |
 | **Ví dụ**                          | `CREATE INDEX idx ON t`<br>`(date DESC, id DESC)` | `CREATE INDEX idx ON t`<br>`(date DESC, id DESC)` | `CREATE INDEX idx ON t`<br>`(date DESC, id DESC)` | `CREATE INDEX idx_desc ON t(date, id)`<br>`CREATE INDEX idx_asc ON t(date, id)` |
 
-13. INVISIBLE / DISABLED INDEX| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
+13. INVISIBLE / DISABLED INDEX
+| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
 |:-----------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|
 | **Invisible Index**                | ❌ Không hỗ trợ                         | ✅ `INVISIBLE` keyword                  | ❌ Không hỗ trợ                         | ✅ `INVISIBLE` (8.0+)                   |
 | **Disabled Index**                 | ✅ `DISABLE` index                      | ❌ Không có (dùng UNUSABLE)             | ❌ Không có                             | ❌ Không có                             |
@@ -130,26 +134,29 @@ SO SÁNH INDEX TRONG ORACLE, SQL SERVER, POSTGRESQL VÀ MYSQL
 | **DML Impact**                     | DISABLE: không maintain                | INVISIBLE: maintain<br>UNUSABLE: không maintain | -                                      | INVISIBLE: vẫn maintain                |
 | **Reactivate**                     | `REBUILD` or `REORGANIZE`              | `VISIBLE` or `REBUILD`                 | -                                      | `VISIBLE`                              |
 
-14. INDEX REBUILD & REORGANIZE| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
+14. INDEX REBUILD & REORGANIZE
+| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
 |:-----------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|
 | **Rebuild Index**                  | ✅ `ALTER INDEX REBUILD`                | ✅ `ALTER INDEX REBUILD`                | ✅ `REINDEX`                            | ✅ `OPTIMIZE TABLE`                     |
 | **Reorganize Index**               | ✅ `ALTER INDEX REORGANIZE`             | ✅ `ALTER INDEX COALESCE`               | ❌ Không có                             | ❌ Không có                             |
 | **Online Rebuild**                 | ✅ `REBUILD ONLINE` (Enterprise)        | ✅ `REBUILD ONLINE`                     | ✅ `REINDEX CONCURRENTLY` (v12+)        | ✅ `ALGORITHM=INPLACE`                  |
 | **Rebuild All Indexes**            | ✅ `ALTER INDEX ALL REBUILD`            | ✅ Loop qua `USER_INDEXES`              | ✅ `REINDEX TABLE`                      | ✅ `OPTIMIZE TABLE`                     |
 | **Auto Rebuild**                   | ❌ Manual hoặc job                      | ❌ Manual hoặc job                      | ❌ Manual hoặc job                      | ❌ Manual hoặc job                      |
-| **Fragmentation Threshold**        | Reorganize: <30%<br>Rebuild: >30%      | Rebuild khi cần                        | Monitor bloat                          | Rebuild khi cần                        |
+| **Fragmentation Threshold**        | Reorganize: <30%<br>Rebuild: >30%       | Rebuild khi cần                          | Monitor bloat                            | Rebuild khi cần                        |
 | **Partial Rebuild**                | ✅ Partition-level rebuild              | ✅ Partition-level rebuild              | ❌ Full reindex only                    | ✅ Partition-level (8.0+)               |
 
-15. INDEX STORAGE & TABLESPACE| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
+15. INDEX STORAGE & TABLESPACE
+| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
 |:-----------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|
-| **Tablespace Support**             | ✅ Filegroup                            | ✅ Tablespace                           | ✅ Tablespace                           | ⚠️ File-per-table or General           |
-| **Separate Index Storage**         | ✅ Index Filegroup                      | ✅ Index Tablespace                     | ✅ Index Tablespace                     | ⚠️ Limited control                     |
+| **Tablespace Support**             | ✅ Filegroup                          | ✅ Tablespace                          | ✅ Tablespace                         | ⚠️ File-per-table or General           |
+| **Separate Index Storage**         | ✅ Index Filegroup                     ✅ Index Tablespace                     | ✅ Index Tablespace                   | ⚠️ Limited control                     |
 | **Cú pháp**                        | `ON [filegroup_name]`                  | `TABLESPACE tablespace_name`           | `TABLESPACE tablespace_name`           | `TABLESPACE tablespace_name` (8.0+)    |
-| **PCTFREE**                        | ✅ `FILLFACTOR`                         | ✅ `PCTFREE`                            | ✅ `FILLFACTOR`                         | ❌ Không có                             |
+| **PCTFREE**                        | ✅ `FILLFACTOR`                        | ✅ `PCTFREE`                          | ✅ `FILLFACTOR`                       | ❌ Không có                            |
 | **Fill Factor Default**            | 100% (0 = 100%)                        | 10% free                               | 90%                                    | ~93.75% (16KB pages)                   |
 | **Ví dụ**                          | `CREATE INDEX idx ON t(col)`<br>`WITH (FILLFACTOR=80)`<br>`ON [IndexFG]` | `CREATE INDEX idx ON t(col)`<br>`PCTFREE 20`<br>`TABLESPACE idx_ts` | `CREATE INDEX idx ON t(col)`<br>`WITH (FILLFACTOR=80)`<br>`TABLESPACE idx_ts` | `CREATE INDEX idx ON t(col)`           |
 
-16. INDEX TRÊN LARGE OBJECTS (LOB)| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
+16. INDEX TRÊN LARGE OBJECTS (LOB)
+| Đặc tính / Loại Index              | SQL Server                             | Oracle Database                        | PostgreSQL                             | MySQL (InnoDB)                         |
 |:-----------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|:---------------------------------------|
 | **Index trên LOB**                 | ❌ Không trực tiếp                      | ❌ Không trực tiếp                      | ❌ Không trực tiếp                      | ❌ Không trực tiếp                      |
 | **Prefix Index**                   | ⚠️ Qua Computed Column                 | ⚠️ Qua Function-Based                  | ⚠️ Qua Expression                      | ✅ `INDEX (col(n))`                     |
