@@ -1,0 +1,8 @@
+### functional_index/function-base index
+- Oracle, postgresql, mysql hỗ trợ, nhưng sql server thì không hỗ trợ
+- Có thể sử dụng calculated column để thay thế functional index trong mọi DBMS
+- calculated column có 1 loại là 
+    + virtual (chỉ lưu metadata): tạo index trên
+        . Hàm deterministic (luôn trả về 1 kết quả với cùng 1 tham số đầu vào) hỗ trợ mọi DBMS
+        . Hàm non-deterministic như: getdate(), row_number()...: chỉ Oracle hỗ trợ 1 số hàm
+    + stored/persisted (lưu data + metadata): có thể tạo index được trong mọi hàm
