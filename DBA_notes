@@ -1,4 +1,4 @@
-### functional_index/function-base index
+### functional/function-base index
 - Oracle, postgresql, mysql hỗ trợ, nhưng sql server thì không hỗ trợ
 - Có thể sử dụng calculated column để thay thế functional index trong mọi DBMS
 - calculated column có 1 loại là 
@@ -6,3 +6,33 @@
         . Hàm deterministic (luôn trả về 1 kết quả với cùng 1 tham số đầu vào) hỗ trợ mọi DBMS
         . Hàm non-deterministic như: getdate(), row_number()...: chỉ Oracle hỗ trợ 1 số hàm
     + stored/persisted (lưu data + metadata): có thể tạo index được trong mọi hàm
+
+### selectivity và cardinality
+- selectivity (kết quả [0,1]) : tỉ lệ (số lượng kết quả trả về)/(số lượng trên tổng hàng). càng nhỏ càng tốt, càng dễ sử dụng index. ex: 5%, 7% ...
+- cardinality: số lượng kết quả trả về. ex: 500 row, 700 row ...
+
+### các loại index 
++ sql server + oracle + postgresql + mysql +
+| clusterd   | IOT
+
+Đặc tính / Loại Index,Oracle Database,SQL Server,PostgreSQL,MySQL (InnoDB)
+B-Tree Index,Mặc định (Normal Index),Non-Clustered Index,Mặc định (B-Tree),Mặc định (B+Tree)
+Clustered Index,Index-Organized Table (IOT),Clustered Index,Không có (Dùng lệnh CLUSTER để sắp xếp vật lý tạm thời),Primary Key (luôn là Clustered)
+Bitmap Index,Hỗ trợ mạnh (Dùng cho Data Warehouse),Không hỗ trợ trực tiếp (Dùng Columnstore thay thế),"Bitmap Scan (Tạo lúc runtime, không lưu trữ vật lý)",Không hỗ trợ
+Functional Index,Function-based Index,Computed Columns (cần đánh Index trên cột này),Indexes on Expressions,Functional Key Parts (từ bản 8.0.13+)
+Partial / Filtered,Không trực tiếp (Dùng Virtual Column hoặc Bitmap),Filtered Index,Partial Index,Không hỗ trợ
+Full-Text Search,Oracle Text,Full-Text Index,GIN / GiST Index (tsvector),Full-Text Index
+Spatial / GiS,Spatial Index (SDO_GEOMETRY),Spatial Index (Geometry/Geography),PostGIS (GiST Index),Spatial Index (R-Tree)
+Descending Index,Hỗ trợ (DESC),Hỗ trợ (DESC),Hỗ trợ (DESC),Hỗ trợ (từ bản 8.0.1+)
+Covering Index,Dùng Index với các cột bổ sung (Composite Index),Include Columns (trong Non-clustered Index),Covering Index (từ bản 11+ với INCLUDE),Composite Index
+
+| Đặc tính / Loại Index | SQL Server | Oracle Database | PostgreSQL | MySQL (InnoDB) |
+| :--- | :--- | :--- | :--- | :--- |
+| **B-Tree Index** | Non-Clustered | Mặc định (Normal) | Mặc định (B-Tree) | Mặc định (B+Tree) |
+| **Clustered Index** | **Clustered Index** | Index-Organized Table | CLUSTER (Lệnh) | **Primary Key** |
+| **Bitmap Index** | Columnstore | Hỗ trợ mạnh (DW) | Bitmap Scan | Không hỗ trợ |
+| **Functional Index** | Computed Columns | Function-based Index | Indexes on Expressions | Functional Key Parts |
+| **Partial Index** | Filtered Index | Virtual Column | **Partial Index** | Không hỗ trợ |
+| **Full-Text Search** | Full-Text Index | Oracle Text | GIN / GiST Index | Full-Text Index |
+| **Spatial / GIS** | Spatial Index | SDO_GEOMETRY | PostGIS (GiST) | Spatial Index |
+| **Covering Index** | **INCLUDE Columns** | Composite Index | Covering (INCLUDE) | Composite Index |
